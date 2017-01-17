@@ -61,6 +61,20 @@
             android:text="du har stadig 5 liv"
             android:gravity="center"
             android:id="@+id/someText2"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="du har tabt spillet et par gange?"
+            android:gravity="center"
+            android:id="@+id/someText3"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="du har vundet spillet et par gange?"
+            android:gravity="center"
+            android:id="@+id/someText4"/>
 
 
 

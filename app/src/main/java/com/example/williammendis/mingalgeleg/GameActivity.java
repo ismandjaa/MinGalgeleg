@@ -1,6 +1,9 @@
 package com.example.williammendis.mingalgeleg;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +26,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private TextView guessText;
     private TextView someText;
     private TextView someText2;
+    private TextView someText3;
+    private TextView someText4;
+    private int antalVundet;
+    private int antalTabt;
 
     Galgelogik logic = new Galgelogik();
 
@@ -43,7 +50,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        antalVundet = preferences.getInt("vundet", antalVundet);
+        antalTabt = preferences.getInt("tabt", antalTabt);
 
         guessButton = (Button) findViewById(R.id.guessButton);
         guessButton.setOnClickListener(this);
@@ -51,12 +60,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         userText = (EditText) findViewById(R.id.userText);
         someText = (TextView) findViewById(R.id.someText);
         someText2 = (TextView) findViewById(R.id.someText2);
+        someText3 = (TextView) findViewById(R.id.someText3);
+        someText4 = (TextView) findViewById(R.id.someText4);
         guessText = (TextView) findViewById(R.id.guessText);
 
         guessText.setText("Du skal gætte ordet: " + logic.getSynligtOrd());
-        someText.setText("du har gættet forkert 0 gange");
+        someText.setText("du har gættet forkert 0 gange i dette spil");
         someText2.setText("brugte bogstaver:");
-
+        someText3.setText("du har tabt spillet " + antalTabt + " gange i alt");
+        someText4.setText("du har vundet spillet " + antalVundet +" gange i alt");
     }
     @Override
     public void onClick(View v) {
@@ -89,11 +101,35 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             if (logic.erSpilletVundet()){
                 guessText.setText("SPILLET ER VUNDET!");
+                userText.setText("ordet var: " + logic.getOrdet());
+                guessButton.setText("SPIL IGEN?");
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("vundet", antalVundet +1);
+                editor.apply();
+                antalVundet = preferences.getInt("vundet", antalVundet);
+                someText4.setText("du har vundet spillet " + antalVundet +" gange i alt");
+
+                if (v == guessButton){
+                    logic.nulstil();
+                    userText.setText("");
+                }
+
             }
             if (logic.erSpilletTabt()){
                 guessText.setText("DU ER DØD, GAME OVER!");
                 userText.setText("ordet var: " + logic.getOrdet());
                 guessButton.setText("SPIL IGEN?");
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("tabt", antalTabt +1);
+                editor.apply();
+                antalTabt = preferences.getInt("tabt", antalTabt);
+                someText3.setText("du har tabt spillet " + antalTabt +" gange i alt");
+
+
                 if (v == guessButton){
                     logic.nulstil();
                     userText.setText("");
