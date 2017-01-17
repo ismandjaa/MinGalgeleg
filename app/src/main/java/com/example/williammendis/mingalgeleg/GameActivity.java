@@ -1,6 +1,7 @@
 package com.example.williammendis.mingalgeleg;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -114,6 +115,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if (v == guessButton){
                     logic.nulstil();
                     userText.setText("");
+                    Intent myIntent = new Intent(v.getContext(), WordActivity.class);
+                    startActivity(myIntent);
                 }
 
             }
@@ -133,6 +136,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 if (v == guessButton){
                     logic.nulstil();
                     userText.setText("");
+                    Intent myIntent = new Intent(v.getContext(), WordActivity.class);
+                    startActivity(myIntent);
                 }
 
             }
